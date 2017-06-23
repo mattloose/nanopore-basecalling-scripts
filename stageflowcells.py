@@ -22,27 +22,25 @@ for root, dirs, files in os.walk(process_dir, topdown=False):
 		basecalled_files.add(name)
 
 for root, dirs, files in os.walk(input_dir, topdown=False):
-	    for name in files:
-			if name not in basecalled_files:
-				m = re.search('_(FN.*?)_', name)
-				if not m:
-					continue
-				flowcell = m.group(1)
+	for name in files:
+		if name not in basecalled_files:
+			m = re.search('_(FN.*?)_', name)
+			if not m:
+				continue
+			flowcell = m.group(1)
 
-				albacore_root = root[len(input_dir):]
-				# move it
-				checkdir = process_dir + '/' + flowcell + '/' + albacore_root
-				if not os.path.exists(checkdir):
-					os.makedirs(checkdir)
-				movefrom = input_dir + '/' + albacore_root + '/' + name
-				moveto = process_dir + '/' + flowcell + '/' + albacore_root + '/' + name
-				print "Copy %s to %s" % (movefrom, moveto)
-
-				abspath = os.path.abspath(movefrom)
-				print "Abspath %s" % (abspath,)	
-				os.symlink(abspath, moveto)
-
-#				shutil.copy(movefrom, moveto)
+			albacore_root = root[len(input_dir):]
+			# move it
+			checkdir = process_dir + '/' + flowcell + '/' + albacore_root
+			if not os.path.exists(checkdir):
+				os.makedirs(checkdir)
+			movefrom = input_dir + '/' + albacore_root + '/' + name
+			moveto = process_dir + '/' + flowcell + '/' + albacore_root + '/' + name
+			print "Copy %s to %s" % (movefrom, moveto)
+			abspath = os.path.abspath(movefrom)
+			print "Abspath %s" % (abspath,)	
+			os.symlink(abspath, moveto)
+			shutil.copy(movefrom, moveto)
 
 
 
